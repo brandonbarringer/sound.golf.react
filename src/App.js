@@ -20,7 +20,7 @@ import {
 } from './inc/location';
 
 import { getUserWeather } from './inc/weather';
-import { celciusToFahrenheit, stringPercentToNumber } from './inc/calc';
+import { celciusToFahrenheit, stringPercentToNumber, speedOfSound as calcSound } from './inc/calc';
 
 // Global Styles
 injectGlobal({...reset});
@@ -28,6 +28,7 @@ injectGlobal({...reset});
 
 function App() {
   const [store, setStore] = useStore();
+  const [speedOfSound, setSpeedOfSound] = React.useState(0);
 
   useEffect(() => {
     const sucess = async (position) => {
@@ -63,9 +64,17 @@ function App() {
         payload: celciusToFahrenheit(temp2m)
       });
     };
-
     getWeather();
   }, [store.location]);
+
+  useEffect(() => {
+    const { humidity, temperature } = store.weather;
+    if (!humidity.value || !temperature.value) return;
+    const speed = calcSound(temperature.value, humidity.value);
+    setSpeedOfSound(speed);
+    console.log(store);
+  }, [store.weather]);
+
 
   const statList = Object.keys(store.stats).map((stat) => (
     <Stat
@@ -76,11 +85,41 @@ function App() {
     />
   ));
 
+  const locationList = Object.keys(store.location).map((location) => (
+    <Stat
+      key={store.location[location].name}
+      value={store.location[location].value}
+      unit={store.location[location].unit}
+      label={store.location[location].name}
+    />
+  ));
+
+  const weatherList = Object.keys(store.weather).map((weather) => (
+    <Stat
+      key={store.weather[weather].name}
+      value={store.weather[weather].value}
+      unit={store.weather[weather].unit}
+      label={store.weather[weather].name}
+    />
+  ));
+
+
   return (
     <div className="App">
         <StatBox>
           {statList}
         </StatBox>
+        <br/>
+        <br/>
+        <StatBox>
+        {locationList}
+        {weatherList}
+        <Stat
+          value={speedOfSound}
+          unit={'m/s'}
+          label={'Speed of Sound'}
+        />
+      </StatBox>
     </div>
   );
 }
