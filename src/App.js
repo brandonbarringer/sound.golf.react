@@ -72,7 +72,6 @@ function App() {
     if (!humidity.value || !temperature.value) return;
     const speed = calcSound(temperature.value, humidity.value);
     setSpeedOfSound(speed);
-    console.log(store);
   }, [store.weather]);
 
 
@@ -102,7 +101,6 @@ function App() {
       label={store.weather[weather].name}
     />
   ));
-
 
   return (
     <div className="App">
