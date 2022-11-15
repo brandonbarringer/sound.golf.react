@@ -7,7 +7,7 @@ export const fahrenheitToCelcius = (f) => {
 }
 
 export const stringPercentToNumber = (string) => {
-  return parseFloat(string) / 100;
+  return parseFloat(string);
 }
 
 export const speedOfSound = (temperature, humidity) => {
@@ -61,7 +61,7 @@ export const speedOfSound = (temperature, humidity) => {
 
   T = fahrenheitToCelcius(temperature);
   P = 101.325 * 1000.0;
-  Rh = humidity * 100;
+  Rh = humidity;
 
   T_kel = Kelvin + T; // Measured ambient temp
 
