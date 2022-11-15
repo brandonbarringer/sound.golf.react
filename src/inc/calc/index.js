@@ -59,29 +59,28 @@ export const speedOfSound = (temperature, humidity) => {
   const Kelvin = 273.15;	// For converting to Kelvin
   const e = 2.71828182845904523536;
 
-  // Get variables from form
   T = fahrenheitToCelcius(temperature);
   P = 101.325 * 1000.0;
   Rh = humidity * 100;
 
-  T_kel = Kelvin + T; //Measured ambient temp
+  T_kel = Kelvin + T; // Measured ambient temp
 
   // Molecular concentration of water vapour calculated from Rh
   // using Giacomos method by Davis (1991) as implemented in DTU report 11b-1997
   ENH = 3.14 * Math.pow(10, -8) * P + 1.00062 + sqr(T) * 5.6 * Math.pow(10, -7);
 
-  //These commented lines correspond to values used in Cramer (Appendix)
-  //PSV1 = sqr(T_kel)*1.2811805*Math.pow(10,-5)-1.9509874*Math.pow(10,-2)*T_kel ;
-  //PSV2 = 34.04926034-6.3536311*Math.pow(10,3)/T_kel;	
+  // These commented lines correspond to values used in Cramer (Appendix)
+  // PSV1 = sqr(T_kel)*1.2811805*Math.pow(10,-5)-1.9509874*Math.pow(10,-2)*T_kel ;
+  // PSV2 = 34.04926034-6.3536311*Math.pow(10,3)/T_kel;	
   PSV1 = sqr(T_kel) * 1.2378847 * Math.pow(10, -5) - 1.9121316 * Math.pow(10,-2) * T_kel;
   PSV2 = 33.93711047 - 6.3431645 * Math.pow(10, 3) / T_kel;
   PSV = Math.pow(e, PSV1) * Math.pow(e, PSV2);
   H = Rh * ENH * PSV / P;
   Xw = H / 100.0;
-  Xc = 400.0*Math.pow(10,-6);
+  Xc = 400.0 * Math.pow(10,-6);
 
-  //Speed calculated using the method of Cramer from
-  //JASA vol 93 pg 2510
+  // Speed calculated using the method of Cramer from
+  // JASA vol 93 pg 2510
   C1 = (
     0.603055 
     * T 
@@ -89,7 +88,7 @@ export const speedOfSound = (temperature, humidity) => {
     - sqr(T) 
     * 5.28 
     * Math.pow(10, -4) 
-    + (0.1495874 * T + 51.471935 - sqr(T) * 7.82 * Math.pow(10, -4)) *Xw
+    + (0.1495874 * T + 51.471935 - sqr(T) * 7.82 * Math.pow(10, -4)) * Xw
   );
 
   C2 = (
@@ -110,7 +109,6 @@ export const speedOfSound = (temperature, humidity) => {
 
   C = C1 + C2 - C3;
 
-
-  return roundTo(C,2);
+  return roundTo(C, 5);
 }
 
